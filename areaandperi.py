@@ -59,7 +59,7 @@ class Triangle(Shape):
         return self.side
 
     def area(self):
-        return 1/2*(self.base*self.height)
+        return 1/2*(float(self.base)*float(self.height))
 
     def perimeter(self):
         return self.side_a+self.side_b+self.side_c
