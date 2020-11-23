@@ -1,24 +1,28 @@
-
-#WILL ONLY WORK IF YOU TURN OFF THE TWO FACTOR AUTHENTICATION!
-
 import imaplib
-
-
-M=imaplib.IMAP4_SSL("imap.gmail.com")
-
-
 import getpass
+A=imaplib.IMAP4_SSL("imap.gmail.com")
+email=getpass.getpass("Email:")
+password=getpass.getpass("Password: ")
+A.login(email,password)
+A.select("INBOX")
+typ,data = A.search(None,"SUBJECT 'HEYYYY'")
+A.select("INBOX")
 
-
-email=getpass.getpass("email : ")
-password=getpass.getpass("password: ")
-
-
-M.login(email,password)
-
-M.select("INBOX")
-typ,data=M.search(None,'SUBJECT "This is a python test"')
 email_id=data[0]
-result,email_id=M.fetch(email_id,"(RFC882)")
+result, email_data = A.fetch(data[0],"(RFC822)")
+raw_email=email_data[0][1]
+raw_email_string=raw_email.decode("utf-8")
+import email
+email_message=email.message_from_string(raw_email_string)
+for part in email_message.walk():
+    if part.get_content_type()== "text/plain":
+        body=part.get_payload(decode=True)
+        print(body)
+    
+
+
+
+
+
 
 
